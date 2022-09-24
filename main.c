@@ -64,13 +64,15 @@ void performPass1(struct symbol* symbolTable[], char* filename, address* address
 		// printf("Hash Table Log\n");
 		// printf("--------------\n");
 		while ( fgets(buffer, INPUT_BUF_SIZE, ptr)){
-			while(addresses>8000){
+			if(addresses->current>8000){
 				//displayError(0, argv[0]); 
+				exit(1);
        
 
 
 			
-
+			}
+			else{
 			if(strcmp(buffer[0],32)==-1){
 
 				///blank record;
@@ -85,73 +87,52 @@ void performPass1(struct symbol* symbolTable[], char* filename, address* address
 			
 			 
 
-			  struct segment *temp[] = prepareSegments(buffer);
+			  struct segment temp[] = prepareSegments(buffer);
 
-			 if (isDirective(segment.first) ||isOpcode(segment.first)){
+			 if (isDirective(temp->first) ||isOpcode(temp->first)){
 				////display the illegal symbol error message
-				exit(1)
+				exit(1);
 			 }
-			 else if(isDirective(segment.second)){
+			 else if(isDirective(temp->second)){
 
-				if(isStartDirective(segment.second)){
-        //  address.start= segment.third;
-				 strcpy( address.start,segment.third );
-         address.current= segment.third;
+				if(isStartDirective(temp->second)){
+        //  address.start= temp.third;
+				 strcpy( addresses->start,temp->third );
+         addresses->current= temp->third;
 
 
 
 				}
 				else{
-					address.increment =getMemoryAmount(segment.second, segment.third);
+					addresses->increment =getMemoryAmount(temp->second, temp->third);
 
 
 
 
 				}
 			 }
-			 else if(isOpcode(segment.second)){
-				address.increment= 3;
+			 else if(isOpcode(temp->second)){
+				addresses->increment= 3;
 
 
 			 }
-			 else if(!isDirective(segment.second) && !isOpcode(segment.second)){
+			 else if(!isDirective(temp->second) && !isOpcode(temp->second)){
 
        /// display illegal opcode directive
-			 exit(1)
+			 exit(1);
 
 			 }
-			 else if(strlen(segment.first)>0){
+			 else if(strlen(temp->first)>0){
 
-				insertSymbol(symbolTable,segment.first, address.current);
+				insertSymbol(symbolTable,temp->first, addresses->current);
 
 			 }
 
 
-			 address.current += address.increment;
+			 addresses->current += addresses->increment;
 			memset(buffer, '\0', INPUT_BUF_SIZE);
 		
 
-			 
-
-		
-
-	
-
-
-			// printf("%s", buffer);
-			// char *p = strstr(buffer,"\r");
-			//  if(p!=NULL){
-			// buffer[(int)(p-buffer)]='\0';
-			// }
-
-			// if(testRecord( buffer)){
-			 
-			// struct student temp = createStudent( buffer);
-			// if(testStudentData(temp)){
-			// 	insertStudent(hashTable,&temp );
-			// }
-			
-      
 			
 			}
 		}

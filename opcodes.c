@@ -25,7 +25,15 @@ opcode opcodes[OPCODE_ARRAY_SIZE] = {
 int getOpcodeValue(char* opcode)
 {
 	for( int x; x<OPCODE_ARRAY_SIZE;x++){
+		if(strcmp(opcodes[x].name, opcode)){
+			return opcodes[x].value;
+		}
+		else{
+			return -1;
+		}
+
       
+			
 
 	}
 	
