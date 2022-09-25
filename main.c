@@ -15,26 +15,27 @@ int main(int argc, char* argv[])
 	// Do not modify this statement
 	address addresses = { 0x00, 0x00, 0x00 };
 	// Your code should start here
-  if (argc <  2) /* argc should be 3 for correct execution */
-    {
-					displayError(0, argv[0]);    
-        	exit(1);
-    }
+  // if (argc <  2) /* argc should be 3 for correct execution */
+  //   {
+	// 				displayError(0, argv[0]);    
+  //       	exit(1);
+  //   }
     
 
-    else{
+  //   else{
 
-			struct symbole* symbolArray[SYMBOL_TABLE_SIZE];
-			initializeTable(symbolArray);
+			symbol *symbolTable[SYMBOL_TABLE_SIZE];
+			initializeSymbolTable(symbolTable);
+			performPass1(symbolTable,"test0.sic",&addresses);
 
-			performPass1(symbolArray,argv[1],&addresses);
+			// performPass1(symbolTable,argv[1],&addresses);
       
 
 
 
 
 
-		}
+		// }
 
 
 
@@ -51,11 +52,12 @@ void performPass1(struct symbol* symbolTable[], char* filename, address* address
 	int index=0;
 	ptr= fopen(filename,"r");
 	int x = 0 ;
+	int typeDirective=0;
 	
 
 	if(!ptr){
 		// printf("File Not found");
-		displayError(1, filename);
+		displayError(3, filename);
 		exit(1);
 	}
 	else{
@@ -73,12 +75,12 @@ void performPass1(struct symbol* symbolTable[], char* filename, address* address
 			
 			}
 			else{
-			if(strcmp(buffer[0],32)==-1){
+			if(buffer[0]<32){
 
 				///blank record;
 
 			}
-			else if(strcmp(buffer[0],'#')){
+			else if(buffer[0]=='#'){
 				break;
 
       
@@ -86,25 +88,26 @@ void performPass1(struct symbol* symbolTable[], char* filename, address* address
 			}
 			
 			 
-
-			  struct segment temp[] = prepareSegments(buffer);
+			// struct student temp = createStudent( buffer);
+			   segment *temp = prepareSegments(buffer);
 
 			 if (isDirective(temp->first) ||isOpcode(temp->first)){
 				////display the illegal symbol error message
 				exit(1);
 			 }
-			 else if(isDirective(temp->second)){
 
-				if(isStartDirective(temp->second)){
+			 else if((typeDirective=(isDirective(temp->second)))){
+
+				if(isStartDirective(typeDirective)){
         //  address.start= temp.third;
-				 strcpy( addresses->start,temp->third );
-         addresses->current= temp->third;
+				 addresses->start= atoi(temp->third);
+         addresses->current= atoi(temp->third);
 
 
 
 				}
 				else{
-					addresses->increment =getMemoryAmount(temp->second, temp->third);
+					addresses->increment =getMemoryAmount(atoi(temp->second), temp->third);
 
 
 

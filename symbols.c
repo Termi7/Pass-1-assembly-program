@@ -5,6 +5,7 @@
 #define SYMBOL_TABLE_SIZE 100
 
 int computeHash(char* input);
+void initializeSymbolTable(struct symbol* symbolTable[]);
 
 int computeHash(char* symbolName)
 {

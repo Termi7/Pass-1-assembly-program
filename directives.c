@@ -151,7 +151,7 @@ int isDirective(char* string)
 
 bool isStartDirective(int directiveType)
 {
- if((strcmp (START, directiveType)==0)){
+ if(directiveType== 5){
 		return true;
 
  }
