@@ -27,6 +27,7 @@ int main(int argc, char* argv[])
 			symbol *symbolTable[SYMBOL_TABLE_SIZE];
 			initializeSymbolTable(symbolTable);
 			performPass1(symbolTable,"test0.sic",&addresses);
+			displaySymbolTable( symbolTable);
 
 			// performPass1(symbolTable,argv[1],&addresses);
       
@@ -47,6 +48,8 @@ void performPass1(struct symbol* symbolTable[], char* filename, address* address
 
 	
 	// memset() - fill the buffer array with the specified character
+		printf("Symbol Table Log\n");
+		printf("--------------\n");
 	char buffer [INPUT_BUF_SIZE];
 	FILE *ptr;
 	int index=0;
@@ -66,6 +69,13 @@ void performPass1(struct symbol* symbolTable[], char* filename, address* address
 		// printf("Hash Table Log\n");
 		// printf("--------------\n");
 		while ( fgets(buffer, INPUT_BUF_SIZE, ptr)){
+
+			char *p = strstr(buffer,"\r");
+			 if(p!=NULL){
+			buffer[(int)(p-buffer)]='\0';
+			}
+
+			printf("%s\n", buffer);
 			if(addresses->current>8000){
 				//displayError(0, argv[0]); 
 				exit(1);
@@ -81,7 +91,7 @@ void performPass1(struct symbol* symbolTable[], char* filename, address* address
 
 			}
 			else if(buffer[0]=='#'){
-				break;
+			  continue;
 
       
 
@@ -91,12 +101,13 @@ void performPass1(struct symbol* symbolTable[], char* filename, address* address
 			// struct student temp = createStudent( buffer);
 			   segment *temp = prepareSegments(buffer);
 
-			 if (isDirective(temp->first) ||isOpcode(temp->first)){
+			 if (isDirective(temp->first) || isOpcode(temp->first)){
 				////display the illegal symbol error message
+				displayError(5, temp->first);
 				exit(1);
 			 }
 
-			 else if((typeDirective=(isDirective(temp->second)))){
+			 if((typeDirective=(isDirective(temp->second)))){
 
 				if(isStartDirective(typeDirective)){
         //  address.start= temp.third;
@@ -114,18 +125,19 @@ void performPass1(struct symbol* symbolTable[], char* filename, address* address
 
 				}
 			 }
-			 else if(isOpcode(temp->second)){
+			  if(isOpcode(temp->second)){
 				addresses->increment= 3;
 
 
 			 }
-			 else if(!isDirective(temp->second) && !isOpcode(temp->second)){
+			 if(!isDirective(temp->second) && !isOpcode(temp->second)){
 
        /// display illegal opcode directive
+			 displayError(4, temp->first);
 			 exit(1);
 
 			 }
-			 else if(strlen(temp->first)>0){
+			if(strlen(temp->first)>0){
 
 				insertSymbol(symbolTable,temp->first, addresses->current);
 

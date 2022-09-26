@@ -28,14 +28,15 @@ int getOpcodeValue(char* opcode)
 		if(strcmp(opcodes[x].name, opcode)){
 			return opcodes[x].value;
 		}
-		else{
-			return -1;
-		}
+		
+			
+		
 
       
 			
 
 	}
+	return -1;
 	
 }
 
@@ -47,10 +48,10 @@ bool isOpcode(char* string)
 	if(value== -1){
 		return false;
 	}
-	else if(value>=0){
+	// else if(value>=0){
 
 		return true;
-	}
+	// }
 
 
 

@@ -1,15 +1,24 @@
-edit : main.o opcode.o error.o symbols.o directives.o
-       	cc -o edit main.o opcode.o error.o symbols.o directives.o
+# all:  errors symbols directives opcodes main
+all:  main test
 
-main.o : main.c defs.h
-        cc -c main.c
-opcodes.o : opcodes.c headers.h
-        cc -c opcodes.c
-error.o : error.c headers.h
-        cc -c error.c
-directives.o : directives.c headers.h
-        cc -c directives.c
-symbols.o : symbols.c defs.h  headers.h
-        cc -c symbols.c
-clean :
-        rm edit main.o opcode.o error.o symbols.o directives.o
+main: main.c headers.h errors.c symbols.c directives.c opcodes.c 
+	gcc -o main main.c errors.c symbols.c directives.c opcodes.c
+
+# symbols: symbols.c headers.h
+# 	gcc -o symbols symbols.h
+
+# opcodes:opcodes.c headers.h
+# 	gcc -o opcodes opcodes.c
+
+# directives: directives.c headers.h
+# 	gcc -o directives directives.c
+
+# errors: errors.c headers.h
+# 	gcc -o errors errors.c
+
+test: main
+	./main
+
+
+
+	

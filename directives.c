@@ -13,24 +13,25 @@ int getMemoryAmount(int directiveType, char* string)
 	 switch (directiveType)
 	 {
 	 case ERROR:
-
+     return 0;
 
 		/* code */
 		break;
 		case BYTE:
-		if(strstr(string, 'X')){
+		if(atoi(string)<0 && atoi(string)<strtol("FF", NULL, 10)){
+		if(strchr(string, 'X')!=NULL){
 					return 1;
 		// strtol(string, NULL, 16);
 					//out of range
-
+		}
 
 				 }
-				 else if(strstr(string, 'C')){
+				 else if(strchr(string, 'C')!=NULL){
 					int count=0;
 
 					for(int x= 2; x<strlen(string);x++){
 
-						if(string[x]!="'"){
+						if(strcmp(&string[x],"'")!=0){
 							count+=1;
 
 
@@ -58,7 +59,7 @@ int getMemoryAmount(int directiveType, char* string)
 		/* code */
 		break;
 		case RESW:
-		return strtol(itoa((int)string*3), NULL, 16);
+		return 3*strtol(string, NULL, 16);
 
 
 	 
@@ -72,13 +73,9 @@ int getMemoryAmount(int directiveType, char* string)
 		break;
 		case WORD:
 		return 3;
-
-	 
-		/* code */
-		break;
-	 
-	 }
+		}
 	  
+		return 0;
 		
 		
 		
@@ -127,25 +124,27 @@ int getMemoryAmount(int directiveType, char* string)
 
 int isDirective(char* string) 
 {
-	 if(strcmp (ERROR, string)==0){
+	 if(strcmp ("ERROR", string)==0){
 		  return ERROR;
 
 	 }
-	 else if((strcmp (BYTE, string)==0)){
+	 else if((strcmp ("BYTE", string)==0)){
 		return BYTE;
 
-	 }else if((strcmp (END, string)==0)){
+	 }else if((strcmp ("END", string)==0)){
 		return END;
-	 }else if((strcmp (RESB, string)==0)){
+	 }else if((strcmp ("RESB", string)==0)){
 		return RESB;
-	 }else if((strcmp (RESW, string)==0)){
+	 }else if((strcmp ("RESW", string)==0)){
 		return RESW;
-	 }else if((strcmp (START, string)==0)){
+	 }else if((strcmp ("START", string)==0)){
 		return START;
 		
-	 }else if((strcmp (WORD, string)==0)){
+	 }else if((strcmp ("WORD", string)==0)){
 		return WORD;
 	 }
+	 return -1;
+	 
 
 }
 

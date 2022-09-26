@@ -22,6 +22,21 @@ int computeHash(char* symbolName)
 
 void displaySymbolTable(struct symbol* symbolTable[])
 {
+	printf("Symbol Table Content\n");
+	printf("-----------------\n");
+	printf("%s", " ");
+	printf("Index  	Name                  	     Number\n");
+	printf("-----  	--------------------  	    	     ---------  -----------------  	-------  ---\n");
+   for(int index = 0; index<SYMBOL_TABLE_SIZE; index++) {
+		if(symbolTable[index] != NULL){
+
+				 
+				  printf("%4d  		%-20s         %-5d \n", index, symbolTable[index]->name, symbolTable[index]->address);
+	
+      
+   }
+	 }
+	
 
 
 }
@@ -37,7 +52,7 @@ for(int i=0;i<SYMBOL_TABLE_SIZE; i++){
 void insertSymbol(struct symbol* symbolTable[], char symbolName[], int symbolAddress)
 {
       int key;
-	    key =computerHash(symbolName);
+	    key = computeHash(symbolName);
       
       struct symbol *ptrMemory = malloc (sizeof(struct symbol));
       
@@ -58,13 +73,13 @@ void insertSymbol(struct symbol* symbolTable[], char symbolName[], int symbolAdd
          key %=SYMBOL_TABLE_SIZE;
 			
 		}
-			int actual = key;
+			// int actual = key;
 			
 	
       symbolTable[key]= ptrMemory;
 
 
-      printf("Added %-20s to Symbol Table at  Index %-2d\n", symbolTable[key]->name, computerHash(symbolTable[key]->name), key);
+      printf("Added %-20s to Symbol Table at  Index %-2d\n", symbolTable[key]->name, key);
 
 
 
