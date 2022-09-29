@@ -25,13 +25,13 @@ void displaySymbolTable(struct symbol* symbolTable[])
 	printf("Symbol Table Content\n");
 	printf("-----------------\n");
 	printf("%s", " ");
-	printf("Index  	Name                  	     Number\n");
-	printf("-----  	--------------------  	    	     ---------  -----------------  	-------  ---\n");
+	printf("Index  	Name                  	     Address\n");
+	printf("-----  	--------------------  	    	     ---------\n");
    for(int index = 0; index<SYMBOL_TABLE_SIZE; index++) {
 		if(symbolTable[index] != NULL){
 
 				 
-				  printf("%4d  		%-20s         %-5d \n", index, symbolTable[index]->name, symbolTable[index]->address);
+				  printf("%4d  		%-20s         0x%-5X \n", index, symbolTable[index]->name, symbolTable[index]->address);
 	
       
    }
@@ -63,8 +63,8 @@ void insertSymbol(struct symbol* symbolTable[], char symbolName[], int symbolAdd
 
       while(symbolTable[key]!= NULL){
 					if(strcmp (symbolTable[key]->name, ptrMemory->name)==0){
-				   displayError(5,symbolTable[key]->name);
-				   break;
+				   displayError(2,symbolTable[key]->name);
+				   exit(1);
 					}
 				
 				key = key +1;
@@ -79,7 +79,7 @@ void insertSymbol(struct symbol* symbolTable[], char symbolName[], int symbolAdd
       symbolTable[key]= ptrMemory;
 
 
-      printf("Added %-20s to Symbol Table at  Index %-2d\n", symbolTable[key]->name, key);
+      printf("Added %s to Symbol Table at  Index %-2d\n", symbolTable[key]->name, key);
 
 
 

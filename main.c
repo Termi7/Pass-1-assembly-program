@@ -29,6 +29,13 @@ int main(int argc, char* argv[])
 			performPass1(symbolTable,"test0.sic",&addresses);
 			displaySymbolTable( symbolTable);
 
+
+			// printf("Assembly Summary");
+      // printf("----------------");
+    	// printf("Starting Address: %d", address.start);
+      // printf("Ending Address: %d", address.increment);
+      // printf("Program Size (bytes):   %d", address.increment -adress.start);
+
 			// performPass1(symbolTable,argv[1],&addresses);
       
 
@@ -75,8 +82,9 @@ void performPass1(struct symbol* symbolTable[], char* filename, address* address
 			buffer[(int)(p-buffer)]='\0';
 			}
 
-			printf("%s\n", buffer);
-			if(addresses->current>8000){
+			// printf("%s\n", buffer);
+			// if(addresses->current>8000){
+					if(addresses->current>32768){
 				//displayError(0, argv[0]); 
 				exit(1);
        
@@ -87,7 +95,8 @@ void performPass1(struct symbol* symbolTable[], char* filename, address* address
 			else{
 			if(buffer[0]<32){
 
-				///blank record;
+			displayError(1, &buffer[0]);
+			exit(1);
 
 			}
 			else if(buffer[0]=='#'){
@@ -101,39 +110,61 @@ void performPass1(struct symbol* symbolTable[], char* filename, address* address
 			// struct student temp = createStudent( buffer);
 			   segment *temp = prepareSegments(buffer);
 
-			 if (isDirective(temp->first) || isOpcode(temp->first)){
+			 if (isDirective(temp->first)!=0 && isOpcode(temp->first)){
 				////display the illegal symbol error message
 				displayError(5, temp->first);
 				exit(1);
 			 }
 
-			 if((typeDirective=(isDirective(temp->second)))){
+			 if((isDirective(temp->second)!=0)){
 
-				if(isStartDirective(typeDirective)){
-        //  address.start= temp.third;
-				 addresses->start= atoi(temp->third);
-         addresses->current= atoi(temp->third);
+				if(isStartDirective(isDirective(temp->second))){
+				// char dec;
+				// char temp1;
+				// temp1 =strtol(temp->third, NULL, 16);
+				
+				// printf("%ld", strtol(dec, NULL, 16));
+
+		//  strtol(dec, NULL, 10);
+
+	 
+				
+        //  printf("%d",atoi(temp->third));
+				 long n = (int )strtol(temp->third, NULL, 16);
+				  // printf("%ld",n);
+				//  long s=strtol(n, NULL, 10);
+				 addresses->start= n;
+         addresses->current= n;
+				// // addresses->start= strtol(&dec, NULL, 10);
+        // //  addresses->current= strtol(&dec, NULL, 10);
+				//  addresses->start= temp1;
+        //  addresses->current= temp1;
+				
 
 
 
 				}
 				else{
-					addresses->increment =getMemoryAmount(atoi(temp->second), temp->third);
+					// sprintf( hex,"%X", temp);
+					// printf("%d\n", getMemoryAmount(isDirective(temp->second), temp->third));
+					addresses->increment = getMemoryAmount(isDirective(temp->second), temp->third);
+			
 
 
 
 
 				}
 			 }
-			  if(isOpcode(temp->second)){
+			  else if(isOpcode(temp->second)){
 				addresses->increment= 3;
 
 
 			 }
-			 if(!isDirective(temp->second) && !isOpcode(temp->second)){
+			 else{
+				//if(isDirective(temp->second)==0 || isOpcode(temp->second)==false)
 
        /// display illegal opcode directive
-			 displayError(4, temp->first);
+			 displayError(4, temp->second);
 			 exit(1);
 
 			 }
@@ -170,7 +201,7 @@ segment* prepareSegments(char* statement)
 	struct segment* temp = malloc(sizeof(segment));
 	strncpy(temp->first, statement, SEGMENT_SIZE - 1);
 	strncpy(temp->second, statement + SEGMENT_SIZE - 1, SEGMENT_SIZE - 1);
-	strncpy(temp->third, statement + (SEGMENT_SIZE - 1) * 2, SEGMENT_SIZE - 1);
+	strncpy(temp->third, statement + (SEGMENT_SIZE -1 ) * 2, SEGMENT_SIZE - 1);
 
 	trim(temp->first);
 	trim(temp->second);

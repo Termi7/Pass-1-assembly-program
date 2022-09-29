@@ -18,7 +18,3 @@ main: main.c headers.h errors.c symbols.c directives.c opcodes.c
 
 test: main
 	./main
-
-
-
-	

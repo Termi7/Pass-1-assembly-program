@@ -7,7 +7,8 @@ enum directives {
 };
 
 int getMemoryAmount(int directiveType, char* string)
-{
+{char hex[80];
+		int temp =0;
 
 
 	 switch (directiveType)
@@ -18,14 +19,18 @@ int getMemoryAmount(int directiveType, char* string)
 		/* code */
 		break;
 		case BYTE:
-		if(atoi(string)<0 && atoi(string)<strtol("FF", NULL, 10)){
+		//strtol("FF", NULL, 16)
+		if(atoi(string)<0 && atoi(string)>255){
+		
+		displayError(8, string);
+		}else{
 		if(strchr(string, 'X')!=NULL){
 					return 1;
 		// strtol(string, NULL, 16);
 					//out of range
 		}
 
-				 }
+				 
 				 else if(strchr(string, 'C')!=NULL){
 					int count=0;
 
@@ -42,6 +47,7 @@ int getMemoryAmount(int directiveType, char* string)
 					return count; 
 
 				 }
+	 }
 
 	 
 		/* code */
@@ -49,29 +55,41 @@ int getMemoryAmount(int directiveType, char* string)
 		case END:
 		
 		
-		return strtol(0, NULL, 16);
+		return 0;
 	 
 		/* code */
 		break;
 		case RESB:
-		return strtol(string, NULL, 16);
+		
+		// temp =strtol(string, NULL, 10);
+		// sprintf( hex,"%X", temp);
+// printf("%ld", strtol(hex, NULL, 16));
+
+		// return strtol(hex, NULL, 16);
+		// printf("%d", atoi(string));
+		return atoi(string);
 	 
 		/* code */
 		break;
 		case RESW:
-		return 3*strtol(string, NULL, 16);
+		// printf("%d", atoi(string));
+		return 3*atoi(string);
+		// return 3*strtol(string, NULL, 10);
 
 
 	 
 		/* code */
 		break;
 		case START:
-		return strtol(0, NULL, 16);
+		return 0;
 
 	 
 		/* code */
 		break;
 		case WORD:
+		if(atoi(string)<-16777216 ||atoi(string)> 16777215){
+			displayError(9, string);
+		}
 		return 3;
 		}
 	  
@@ -124,11 +142,8 @@ int getMemoryAmount(int directiveType, char* string)
 
 int isDirective(char* string) 
 {
-	 if(strcmp ("ERROR", string)==0){
-		  return ERROR;
-
-	 }
-	 else if((strcmp ("BYTE", string)==0)){
+	 
+	  if((strcmp ("BYTE", string)==0)){
 		return BYTE;
 
 	 }else if((strcmp ("END", string)==0)){
@@ -143,7 +158,15 @@ int isDirective(char* string)
 	 }else if((strcmp ("WORD", string)==0)){
 		return WORD;
 	 }
-	 return -1;
+	 else{
+ return ERROR;
+
+	 }
+	
+
+	 
+	
+	 
 	 
 
 }
