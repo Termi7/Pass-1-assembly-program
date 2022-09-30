@@ -24,7 +24,7 @@ void displayError(int errorType, char* errorInfo)
     printf("Error: Duplicate Symbol Name (%s) Found in Source File.\n", errorInfo);
     break;
   case OUT_OF_MEMORY:
-    printf("Error: Program Address (%s) Exceeds Maximum Memory Address [0x8000]\n", errorInfo);
+    printf("Error: Program Address (0x%s) Exceeds Maximum Memory Address [0x8000]\n", errorInfo);
     break;
   case OUT_OF_RANGE_BYTE:
     printf("Error: Byte Value (%s) Out of Range [00 to FF]\n", errorInfo);

@@ -81,11 +81,12 @@ void performPass1(struct symbol* symbolTable[], char* filename, address* address
 			 if(p!=NULL){
 			buffer[(int)(p-buffer)]='\0';
 			}
-
+      char text[20]; 
 			// printf("%s\n", buffer);
 			// if(addresses->current>8000){
 					if(addresses->current>32768){
-				//displayError(0, argv[0]); 
+						sprintf(text, "%X", addresses->current);
+				displayError(7,text);
 				exit(1);
        
 

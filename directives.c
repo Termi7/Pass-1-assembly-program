@@ -20,17 +20,21 @@ int getMemoryAmount(int directiveType, char* string)
 		break;
 		case BYTE:
 		//strtol("FF", NULL, 16)
-		if(atoi(string)<0 && atoi(string)>255){
+		
+		if(strchr(string, 'X')!=NULL){
+			if(atoi(string)<0 || atoi(string)>255){
 		
 		displayError(8, string);
+		exit(1);
 		}else{
-		if(strchr(string, 'X')!=NULL){
-					return 1;
+	return 1;
+		}
+				
 		// strtol(string, NULL, 16);
 					//out of range
 		}
-
-				 
+	 
+	 	 
 				 else if(strchr(string, 'C')!=NULL){
 					int count=0;
 
@@ -47,7 +51,7 @@ int getMemoryAmount(int directiveType, char* string)
 					return count; 
 
 				 }
-	 }
+	 
 
 	 
 		/* code */
@@ -89,6 +93,7 @@ int getMemoryAmount(int directiveType, char* string)
 		case WORD:
 		if(atoi(string)<-16777216 ||atoi(string)> 16777215){
 			displayError(9, string);
+			exit(1);
 		}
 		return 3;
 		}
