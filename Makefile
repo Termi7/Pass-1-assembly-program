@@ -1,5 +1,5 @@
 # all:  errors symbols directives opcodes main
-all:  main test
+all:  main
 
 main: main.c headers.h errors.c symbols.c directives.c opcodes.c 
 	gcc -o main main.c errors.c symbols.c directives.c opcodes.c
@@ -16,5 +16,5 @@ main: main.c headers.h errors.c symbols.c directives.c opcodes.c
 # errors: errors.c headers.h
 # 	gcc -o errors errors.c
 
-test: main
-	./main
+# test: main
+# 	./main

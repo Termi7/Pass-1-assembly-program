@@ -15,35 +15,28 @@ int main(int argc, char* argv[])
 	// Do not modify this statement
 	address addresses = { 0x00, 0x00, 0x00 };
 	// Your code should start here
-  // if (argc <  2) /* argc should be 3 for correct execution */
-  //   {
-	// 				displayError(0, argv[0]);    
-  //       	exit(1);
-  //   }
+  if (argc <  2) /* argc should be 3 for correct execution */
+    {
+					displayError(MISSING_COMMAND_LINE_ARGUMENTS, argv[0]);    
+        	exit(1);
+    }
     
 
-  //   else{
+    else{
 
 			symbol *symbolTable[SYMBOL_TABLE_SIZE];
 			initializeSymbolTable(symbolTable);
-			performPass1(symbolTable,"test0.sic",&addresses);
+			// performPass1(symbolTable,"test3.sic",&addresses);
+			performPass1(symbolTable,argv[1],&addresses);
 			displaySymbolTable( symbolTable);
 
-
-			// printf("Assembly Summary");
-      // printf("----------------");
-    	// printf("Starting Address: %d", address.start);
-      // printf("Ending Address: %d", address.increment);
-      // printf("Program Size (bytes):   %d", address.increment -adress.start);
-
-			// performPass1(symbolTable,argv[1],&addresses);
-      
-
-
-
-
-
-		// }
+      printf("\n");
+			printf("Assembly Summary\n");
+      printf("----------------\n");
+    	printf("Starting Address: 0x%X\n", addresses.start);
+      printf("Ending Address: 0x%X\n", addresses.current);
+      printf("Program Size (bytes):   %d\n", addresses.current -addresses.start);
+		}
 
 
 
@@ -67,7 +60,7 @@ void performPass1(struct symbol* symbolTable[], char* filename, address* address
 
 	if(!ptr){
 		// printf("File Not found");
-		displayError(3, filename);
+		displayError(FILE_NOT_FOUND, filename);
 		exit(1);
 	}
 	else{
@@ -86,74 +79,52 @@ void performPass1(struct symbol* symbolTable[], char* filename, address* address
 			// if(addresses->current>8000){
 					if(addresses->current>32768){
 						sprintf(text, "%X", addresses->current);
-				displayError(7,text);
+				displayError(OUT_OF_MEMORY,text);
 				exit(1);
        
-
-
-			
-			}
+			 }
 			else{
 			if(buffer[0]<32){
 
-			displayError(1, &buffer[0]);
+			displayError(BLANK_RECORD, &buffer[0]);
 			exit(1);
 
 			}
 			else if(buffer[0]=='#'){
 			  continue;
-
-      
-
+			
 			}
 			
-			 
-			// struct student temp = createStudent( buffer);
 			   segment *temp = prepareSegments(buffer);
-
-			 if (isDirective(temp->first)!=0 && isOpcode(temp->first)){
+				
+        // printf("%d",isDirective(temp->first));
+			 if (isDirective(temp->first)!=0  || isOpcode(temp->first)) {
+	
 				////display the illegal symbol error message
-				displayError(5, temp->first);
+				displayError(ILLEGAL_SYMBOL, temp->first);
 				exit(1);
+						 
 			 }
 
-			 if((isDirective(temp->second)!=0)){
-
-				if(isStartDirective(isDirective(temp->second))){
-				// char dec;
-				// char temp1;
-				// temp1 =strtol(temp->third, NULL, 16);
-				
-				// printf("%ld", strtol(dec, NULL, 16));
-
-		//  strtol(dec, NULL, 10);
-
-	 
-				
-        //  printf("%d",atoi(temp->third));
-				 long n = (int )strtol(temp->third, NULL, 16);
-				  // printf("%ld",n);
-				//  long s=strtol(n, NULL, 10);
-				 addresses->start= n;
-         addresses->current= n;
-				// // addresses->start= strtol(&dec, NULL, 10);
-        // //  addresses->current= strtol(&dec, NULL, 10);
-				//  addresses->start= temp1;
-        //  addresses->current= temp1;
-				
-
-
-
-				}
-				else{
-					// sprintf( hex,"%X", temp);
-					// printf("%d\n", getMemoryAmount(isDirective(temp->second), temp->third));
-					addresses->increment = getMemoryAmount(isDirective(temp->second), temp->third);
 			
 
+			 if((isDirective(temp->second)!=0)){
+				// printf("%i\n",isDirective(temp->first));
 
-
-
+				if(isStartDirective(isDirective(temp->second))){
+			
+//  printf("%d",atoi(temp->third));
+				 long n = (int )strtol(temp->third, NULL, 16);
+				
+				  
+				 addresses->start= n;
+         addresses->current= n;
+				
+				}
+				else{
+					
+					addresses->increment = getMemoryAmount(isDirective(temp->second), temp->third);
+			
 				}
 			 }
 			  else if(isOpcode(temp->second)){
@@ -161,14 +132,17 @@ void performPass1(struct symbol* symbolTable[], char* filename, address* address
 
 
 			 }
-			 else{
-				//if(isDirective(temp->second)==0 || isOpcode(temp->second)==false)
+			//  else{
+			  if (isDirective(temp->second)==0 && !isOpcode(temp->second)){
 
        /// display illegal opcode directive
-			 displayError(4, temp->second);
+			 displayError(ILLEGAL_OPCODE_DIRECTIVE, temp->second);
 			 exit(1);
 
-			 }
+			}
+
+
+			
 			if(strlen(temp->first)>0){
 
 				insertSymbol(symbolTable,temp->first, addresses->current);
@@ -183,12 +157,6 @@ void performPass1(struct symbol* symbolTable[], char* filename, address* address
 			
 			}
 		}
-		
-	
-	
-	
-
-
 		
 		fclose(ptr);
 	}

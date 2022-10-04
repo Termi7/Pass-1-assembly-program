@@ -9,6 +9,9 @@ enum directives {
 int getMemoryAmount(int directiveType, char* string)
 {char hex[80];
 		int temp =0;
+			int m=0;
+			
+	int i = 0;
 
 
 	 switch (directiveType)
@@ -19,17 +22,27 @@ int getMemoryAmount(int directiveType, char* string)
 		/* code */
 		break;
 		case BYTE:
-		//strtol("FF", NULL, 16)
-		
+
 		if(strchr(string, 'X')!=NULL){
-			if(atoi(string)<0 || atoi(string)>255){
-		
-		displayError(8, string);
-		exit(1);
-		}else{
-	return 1;
-		}
 				
+				for(i=2; i<strlen(string);i++){
+				// if(string[i]!='\0' ){
+				while(strcmp(&string[i],"'")!=0){
+					
+	 				m = string[i]+ m;
+   				i++;
+						}
+
+					// printf("%d", m);
+				 if(m<0 ||  m>255){
+		
+		displayError(OUT_OF_RANGE_BYTE, string);
+		exit(1);
+		}
+				}
+	return 1;
+		
+			
 		// strtol(string, NULL, 16);
 					//out of range
 		}
@@ -92,7 +105,7 @@ int getMemoryAmount(int directiveType, char* string)
 		break;
 		case WORD:
 		if(atoi(string)<-16777216 ||atoi(string)> 16777215){
-			displayError(9, string);
+			displayError(OUT_OF_RANGE_WORD, string);
 			exit(1);
 		}
 		return 3;
@@ -100,49 +113,6 @@ int getMemoryAmount(int directiveType, char* string)
 	  
 		return 0;
 		
-		
-		
-		
-	// 	if((strcmp (BYTE, string)==0)){
-	// 			 if(strstr(string, 'X')){
-	// 				return 1;
-	// 	// strtol(string, NULL, 16);
-	// 				//out of range
-
-
-	// 			 }
-	// 			 else if(strstr(string, 'C')){
-	// 				int count=0;
-
-	// 				for(int x= 2; x<strlen(string);x++){
-
-	// 					if(string[x]!="'"){
-	// 						count+=1;
-
-
-	// 					}
-	// 				}
-					
-					
-	// 				return count; 
-
-	// 			 }
-
-	//  }else if((strcmp (END, string)==0)){
-	// 	return strtol(0, NULL, 16);
-	//  }else if((strcmp (RESB, string)==0)){
-	// 	return strtol(string, NULL, 16);
-	//  }else if((strcmp (RESW, string)==0)){
-	// 	return RESW;
-	//  }else if((strcmp (START, string)==0)){
-	// 	return strtol(0, NULL, 16);
-		
-	//  }else if((strcmp (WORD, string)==0)){
-	// 	return WORD;
-	//  }
-	
-
-
 }
 
 int isDirective(char* string) 

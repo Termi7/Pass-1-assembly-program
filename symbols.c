@@ -63,7 +63,7 @@ void insertSymbol(struct symbol* symbolTable[], char symbolName[], int symbolAdd
 
       while(symbolTable[key]!= NULL){
 					if(strcmp (symbolTable[key]->name, ptrMemory->name)==0){
-				   displayError(2,symbolTable[key]->name);
+				   displayError(DUPLICATE,symbolTable[key]->name);
 				   exit(1);
 					}
 				
