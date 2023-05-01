@@ -2,11 +2,11 @@
 
 This project is a pass 1 assembly program written in C. The purpose of the program is to read a file containing a SIC (Simplified Instructional Computer) program line by line, and insert the symbol names into a symbol table while keeping track of the current address and starting address. The program updates the current address after processing all instructions and operations, while ensuring that the values obtained are within the specifications of the SIC program format. The program also checks the file being read for any errors. At the end of the program, the symbol table and total memory used for the program are displayed.
 
-# Technologies Used:
+## Technologies Used:
 
 - C programming language
 
-# Getting Started
+## Getting Started
 
 To get started with this program, follow these steps:
 
@@ -17,7 +17,7 @@ To get started with this program, follow these steps:
 5. Input the file name containing the SIC program you want to assemble
 6. The program will output the symbol table and the total memory used for the program
 
-# Features:
+## Features:
 
 - Reads a file containing a SIC program line by line
 - Inserts symbol names into a symbol table
@@ -27,7 +27,6 @@ To get started with this program, follow these steps:
 - Checks the file being read for errors
 - Displays the symbol table and total memory used for the program
 
-# Limitations:
+## Limitations:
 
 - This is a pass 1 assembly program and does not generate object code.
-
